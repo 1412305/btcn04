@@ -1,0 +1,21 @@
+<div class="mx-auto col-4">
+    <h3 class="text-primary">{{action}}</h3>
+    <p class="text-danger">{{error}}</p>
+    <form action={{actionLink}} method="POST">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input class="form-control mr-sm-2" id="email" name="username" type="text" placeholder="Email" aria-label="Email"> 
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input class="form-control mr-sm-2" id="password" name="password" type="password" placeholder="Password" aria-label="Password">
+        </div>
+        {{#if isRegister}}
+        <div class="form-group">
+            <label for="retypepassword">Retype password</label>
+            <input class="form-control mr-sm-2" id="retypepassword" name="retypepassword"  type="password" placeholder="Retype password" aria-label="Retype password">
+        </div>
+        {{/if}}
+        <button class="btn btn-primary my-2 my-sm-0" type="submit">{{action}}</button>
+    </form>
+</div>
