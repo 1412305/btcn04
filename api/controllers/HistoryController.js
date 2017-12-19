@@ -1,4 +1,5 @@
 var History = require('../models/history.js');
+var Wallet = require('../models/wallet.js');
 
 exports.GetAllHistorys = function(req, res){
     History.find({}, function(err, histories){
@@ -23,6 +24,16 @@ exports.CreateHistory = function(req, res){
             res.status(500);
         res.status(200);
     });
+
+    Wallet.findById(history.fromId, function (err, wallet) {
+        wallet.money -= history.amount;
+        wallet.save(function (err) { })
+    })
+    Wallet.findById(history.toId, function (err, wallet) {
+        wallet.money += history.amount;
+        wallet.save(function (err) { })
+    })
+
 };
 
 exports.UpdateHistory = function(req, res){
