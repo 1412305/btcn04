@@ -29,21 +29,21 @@ router.post('/register', function(req, res, next) {
   var errors = req.validationErrors();
  
   if (errors) {
-    return;
+    res.status(500);
   }
   else{
     Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
      
      if (err) {
-        return;
+        res.status(500);
       }
       var wallet = new Wallet();
       wallet.accountId = account._id;
       wallet.save(function(err, wallet){
         if (err)
-          return;
+        res.status(500);
       })
-      return res.status(200);
+      res.status(200);
      });
     }
 });
