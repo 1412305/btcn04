@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
   if (req.isAuthenticated()){
     user = req.user.username;
   }
-  res.render('index', {user: user});
+  res.json(user);
 });
 
 router.get('/login', function(req, res, next) {
@@ -27,16 +27,15 @@ router.post('/register', function(req, res, next) {
   req.checkBody('username', 'Email cannot be empty').notEmpty();
   req.checkBody('password', 'Password cannot be empty').notEmpty();
   var errors = req.validationErrors();
-
+ 
   if (errors) {
-    res.render('account', { action: 'Register', error: errors[0].msg, isRegister: true, actionLink: '/register' });
     return;
   }
   else{
     Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
-      console.log(err);
+     
      if (err) {
-        return res.render('account', {action: 'Register', error: 'Email already taken!', isRegister: true, actionLink: '/register' });
+        return;
       }
       var wallet = new Wallet();
       wallet.accountId = account._id;
@@ -44,7 +43,7 @@ router.post('/register', function(req, res, next) {
         if (err)
           return;
       })
-      res.redirect('/' );
+      return res.status(200);
      });
     }
 });
@@ -54,17 +53,17 @@ router.post('/login', function(req, res) {
   passport.authenticate('local', function(err, account, info) {
     if (err) 
       res.status(500);
-    if (!account) { return res.render('account', {title: 'Login', error: info.message, isRegister: false, actionLink: '/login'}); }
+    if (!account) { return;}
     req.logIn(account, function(err) {
       if (err) {       res.status(500); }
-      return res.redirect('/');
+      return res.status(200);
         });
     })(req, res);
 });
 
 router.get('/logout', function(req, res) {
   req.logout();
-  res.redirect('/');
+  res.status(200);
 });
   
 
