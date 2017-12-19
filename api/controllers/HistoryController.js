@@ -19,6 +19,7 @@ exports.GetHistoryById = function(req, res){
 
 exports.CreateHistory = function(req, res){
     var history = new History(req.body);
+    history.time = new Date();
     History.save(function(err, history){
         if (err)
             res.status(500);
